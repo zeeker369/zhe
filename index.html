@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compound Interest Calculator - Plan Your Financial Future</title>
+    <meta name="description" content="Free online compound interest calculator to help you calculate investment returns, interest earnings, and wealth growth. Perfect for personal finance, investment planning, and financial education.">
+    <meta name="keywords" content="compound interest calculator, investment calculator, interest calculator, wealth growth, financial tools, financial planning">
+    <meta name="author" content="Financial Tools">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Compound Interest Calculator - Plan Your Financial Future">
+    <meta property="og:description" content="Free online compound interest calculator to help you calculate investment returns, interest earnings, and wealth growth">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Compound Interest Calculator - Plan Your Financial Future">
+    <meta property="twitter:description" content="Free online compound interest calculator to help you calculate investment returns, interest earnings, and wealth growth">
+    
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Compound Interest Calculator",
+      "alternateName": "复利计算器",
+      "description": "Free online compound interest calculator to help you calculate investment returns, interest earnings, and wealth growth",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "Financial Tools"
+      },
+      "inLanguage": ["en", "zh-CN"]
+    }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361EE;
+            --primary-light: #4895EF;
+            --secondary: #F72585;
+            --accent: #4CC9F0;
+            --light: #f8f9fa;
+            --dark: #2D3748;
+            --gray: #718096;
+            --success: #4ADE80;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+            --border: #E2E8F0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #ffffff;
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 15px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .logo:hover .logo-icon {
+            transform: scale(1.05);
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .lang-toggle {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .lang-toggle:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+        
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .calculator-card, .results-card, .encyclopedia-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+        
+        .calculator-card:hover, .results-card:hover, .encyclopedia-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .calculator-card {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .input-container {
+            position: relative;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+            font-weight: 500;
+        }
+        
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .buttons-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .calculate-btn, .reset-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+        }
+        
+        .reset-btn {
+            background: white;
+            color: var(--dark);
+            border: 2px solid var(--border);
+        }
+        
+        .reset-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary);
+        }
+        
+        .results-card {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 18px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        
+        .result-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .result-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .result-value {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .total-contributions {
+            color: var(--primary);
+        }
+        
+        .total-interest {
+            color: var(--secondary);
+        }
+        
+        .final-amount {
+            color: var(--success);
+        }
+        
+        .chart-container {
+            height: 280px;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .encyclopedia-card {
+            grid-column: 1 / -1;
+        }
+        
+        .encyclopedia-content {
+            line-height: 1.7;
+        }
+        
+        .encyclopedia-content h3 {
+            margin: 20px 0 12px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .encyclopedia-content p {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .encyclopedia-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .encyclopedia-content li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 8px;
+        }
+        
+        .encyclopedia-content li:before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: -12px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+            gap: 12px;
+            font-size: 1.3rem;
+        }
+        
+        .section-title i {
+            font-size: 1.5rem;
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 18px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+        
+        .formula {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.05) 0%, rgba(76, 201, 240, 0.05) 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid var(--accent);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        }
+        
+        .quote {
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            position: relative;
+            border: 1px solid var(--border);
+        }
+        
+        .quote:before {
+            content: """;
+            font-size: 4rem;
+            color: var(--primary-light);
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            opacity: 0.3;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 0.85rem;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(67, 97, 238, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 180px;
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -90px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.75rem;
+            font-weight: normal;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .tab {
+            padding: 10px 18px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            color: var(--gray);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        /* 移动端优化 */
+        @media (max-width: 968px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .logo {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+            
+            .lang-toggle {
+                align-self: flex-end;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .calculator-card, .results-card, .encyclopedia-card {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+            
+            .result-value {
+                font-size: 1.1rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+            }
+            
+            .calculate-btn, .reset-btn {
+                padding: 16px;
+            }
+            
+            .tabs {
+                justify-content: space-between;
+            }
+            
+            .tab {
+                padding: 12px 15px;
+                flex: 1;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            
+            .calculator-card, .results-card, .encyclopedia-card {
+                padding: 18px;
+            }
+            
+            h1 {
+                font-size: 1.4rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+            
+            .result-item {
+                padding: 15px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .result-value {
+                font-size: 1.3rem;
+                align-self: flex-end;
+            }
+            
+            .chart-container {
+                height: 220px;
+            }
+            
+            .formula-box, .highlight, .quote {
+                padding: 15px;
+            }
+            
+            .quote:before {
+                font-size: 3rem;
+            }
+        }
+        
+        /* 防止输入框在iOS上缩放 */
+        @media screen and (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+        
+        /* 改善移动端触摸体验 */
+        button, .tab, .lang-toggle {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-chart-line" aria-hidden="true"></i>
+                </div>
+                <div>
+                    <h1 id="app-title">Compound Interest Calculator</h1>
+                    <p style="color: var(--gray); font-size: 0.9rem;" id="app-subtitle">Discover the miraculous power of compound interest</p>
+                </div>
+            </div>
+            <button class="lang-toggle" id="langToggle">
+                <i class="fas fa-globe-americas" aria-hidden="true"></i>
+                <span id="langText">中文</span>
+            </button>
+        </header>
+        
+        <main>
+            <div class="calculator-container">
+                <section class="calculator-card" aria-labelledby="input-title">
+                    <div class="section-title">
+                        <i class="fas fa-calculator" aria-hidden="true"></i>
+                        <h2 id="input-title">Input Parameters</h2>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="initialAmount" id="initial-amount-label">
+                            <i class="fas fa-wallet" aria-hidden="true"></i> Initial Amount
+                        </label>
+                        <div class="input-container">
+                            <input type="number" id="initialAmount" min="0" value="10000" aria-describedby="initial-amount-help">
+                            <div class="input-icon">
+                                <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div id="initial-amount-help" class="sr-only">Enter your initial investment amount</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="monthlyContribution" id="monthly-contribution-label">
+                            <i class="fas fa-piggy-bank" aria-hidden="true"></i> Monthly Contribution
+                        </label>
+                        <div class="input-container">
+                            <input type="number" id="monthlyContribution" min="0" value="1000" aria-describedby="monthly-contribution-help">
+                            <div class="input-icon">
+                                <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div id="monthly-contribution-help" class="sr-only">Enter your planned monthly additional investment amount</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="annualRate" id="annual-rate-label">
+                            <i class="fas fa-percentage" aria-hidden="true"></i> Annual Rate (%)
+                            <span class="tooltip">
+                                <i class="fas fa-info-circle" style="color: var(--primary-light);" aria-hidden="true"></i>
+                                <span class="tooltiptext" id="rate-tooltip">Enter the expected annual return percentage</span>
+                            </span>
+                        </label>
+                        <div class="input-container">
+                            <input type="number" id="annualRate" min="0" step="0.1" value="8" aria-describedby="annual-rate-help">
+                            <div class="input-icon">
+                                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div id="annual-rate-help" class="sr-only">Enter the expected annual return percentage</div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="years" id="years-label">
+                            <i class="fas fa-calendar-alt" aria-hidden="true"></i> Years
+                        </label>
+                        <div class="input-container">
+                            <input type="number" id="years" min="1" value="20" aria-describedby="years-help">
+                            <div class="input-icon">
+                                <i class="fas fa-clock" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div id="years-help" class="sr-only">Enter the number of years you plan to invest</div>
+                    </div>
+                    
+                    <div class="buttons-container">
+                        <button class="calculate-btn" id="calculateBtn">
+                            <i class="fas fa-calculator" aria-hidden="true"></i> <span id="calculate-text">Calculate</span>
+                        </button>
+                        <button class="reset-btn" id="resetBtn">
+                            <i class="fas fa-redo" aria-hidden="true"></i> <span id="reset-text">Reset</span>
+                        </button>
+                    </div>
+                </section>
+                
+                <section class="results-card" aria-labelledby="results-title">
+                    <div class="section-title">
+                        <i class="fas fa-chart-bar" aria-hidden="true"></i>
+                        <h2 id="results-title">Calculation Results</h2>
+                    </div>
+                    
+                    <div class="result-item fade-in">
+                        <div class="result-label">
+                            <i class="fas fa-money-bill-wave" style="color: var(--primary);" aria-hidden="true"></i>
+                            <span id="total-contributions-label">Total Contributions</span>
+                        </div>
+                        <span class="result-value total-contributions" id="totalContributions">$250,000.00</span>
+                    </div>
+                    
+                    <div class="result-item fade-in">
+                        <div class="result-label">
+                            <i class="fas fa-coins" style="color: var(--secondary);" aria-hidden="true"></i>
+                            <span id="total-interest-label">Total Interest</span>
+                        </div>
+                        <span class="result-value total-interest" id="totalInterest">$297,156.04</span>
+                    </div>
+                    
+                    <div class="result-item fade-in">
+                        <div class="result-label">
+                            <i class="fas fa-trophy" style="color: var(--success);" aria-hidden="true"></i>
+                            <span id="final-amount-label">Final Amount</span>
+                        </div>
+                        <span class="result-value final-amount" id="finalAmount">$547,156.04</span>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="chart" aria-label="Compound Interest Growth Chart" role="img"></canvas>
+                    </div>
+                </section>
+                
+                <article class="encyclopedia-card">
+                    <header>
+                        <div class="tabs">
+                            <div class="tab active" id="tab-concept">
+                                <i class="fas fa-lightbulb" aria-hidden="true"></i> <span id="tab-concept-text">Concept</span>
+                            </div>
+                            <div class="tab" id="tab-formula">
+                                <i class="fas fa-square-root-alt" aria-hidden="true"></i> <span id="tab-formula-text">Formula</span>
+                            </div>
+                            <div class="tab" id="tab-examples">
+                                <i class="fas fa-chart-pie" aria-hidden="true"></i> <span id="tab-examples-text">Applications</span>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <div class="tab-content active" id="content-concept">
+                        <div class="encyclopedia-content" id="encyclopedia-content-en-concept">
+                            <div class="highlight">
+                                <h3><i class="fas fa-lightbulb"></i> What is Compound Interest?</h3>
+                                <p>Compound interest is the interest calculated on the initial principal and also on the accumulated interest of previous periods of a deposit or loan. It's often called "interest on interest".</p>
+                                <p>Unlike simple interest, compound interest calculates interest not only on the principal but also on the previously earned interest, leading to exponential growth of funds.</p>
+                            </div>
+                            
+                            <div class="quote">
+                                <p>"Compound interest is the eighth wonder of the world. He who understands it, earns it; he who doesn't, pays it." - Albert Einstein</p>
+                            </div>
+                            
+                            <h3><i class="fas fa-bolt"></i> The Power of Compound Interest</h3>
+                            <p>Albert Einstein reportedly called compound interest the "eighth wonder of the world." Over time, compound interest causes wealth to grow exponentially. The key factors are:</p>
+                            <ul>
+                                <li><strong>Starting to invest early</strong> - Time is the best friend of compound interest</li>
+                                <li><strong>Maintaining consistent contributions</strong> - Regular investments smooth out market fluctuations</li>
+                                <li><strong>Achieving reasonable returns</strong> - Long-term stable returns are more important than short-term high returns</li>
+                                <li><strong>Allowing sufficient time for compounding to work</strong> - Compound interest needs time to show its power</li>
+                            </ul>
+                            
+                            <h3><i class="fas fa-balance-scale"></i> Compound vs. Simple Interest</h3>
+                            <p>Simple interest is calculated only on the principal amount, whereas compound interest is calculated on the principal and the accumulated interest. Over the long term, investments with compound interest significantly outperform those with simple interest.</p>
+                            <p>For example, investing $10,000 at 10% annual interest:</p>
+                            <ul>
+                                <li>Simple Interest: $30,000 after 20 years</li>
+                                <li>Compound Interest: $67,275 after 20 years</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="encyclopedia-content hidden" id="encyclopedia-content-zh-concept">
+                            <div class="highlight">
+                                <h3><i class="fas fa-lightbulb"></i> 什么是复利？</h3>
+                                <p>复利是指在计算利息时，不仅计算初始本金的利息，还计算之前期间累计利息的利息。它通常被称为"利滚利"。</p>
+                                <p>与单利不同，复利不仅计算本金的利息，还计算之前所获利息的利息，从而带来资金的指数级增长。</p>
+                            </div>
+                            
+                            <div class="quote">
+                                <p>"复利是世界第八大奇迹。懂得它的人，赚取它；不懂它的人，支付它。" - 阿尔伯特·爱因斯坦</p>
+                            </div>
+                            
+                            <h3><i class="fas fa-bolt"></i> 复利的力量</h3>
+                            <p>阿尔伯特·爱因斯坦将复利称为"世界第八大奇迹"。随着时间的推移，复利使财富呈指数级增长。关键因素包括：</p>
+                            <ul>
+                                <li><strong>尽早开始投资</strong> - 时间是复利最好的朋友</li>
+                                <li><strong>保持持续投入</strong> - 定期投资可以平滑市场波动</li>
+                                <li><strong>实现合理回报</strong> - 长期稳定的回报比短期高回报更重要</li>
+                                <li><strong>给予足够的时间让复利发挥作用</strong> - 复利需要时间来展现其力量</li>
+                            </ul>
+                            
+                            <h3><i class="fas fa-balance-scale"></i> 复利与单利的比较</h3>
+                            <p>单利只计算本金的利息，而复利计算本金和累计利息的利息。从长期来看，复利投资的表现明显优于单利投资。</p>
+                            <p>例如，以10%的年利率投资10,000美元：</p>
+                            <ul>
+                                <li>单利：20年后为30,000美元</li>
+                                <li>复利：20年后为67,275美元</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="content-formula">
+                        <div class="encyclopedia-content" id="encyclopedia-content-en-formula">
+                            <div class="formula-box">
+                                <h3><i class="fas fa-square-root-alt"></i> Compound Interest Formula</h3>
+                                <p>The formula for compound interest is: <span class="formula">A = P(1 + r/n)^(nt)</span>, where:</p>
+                                <ul>
+                                    <li><strong>A</strong> = the future value of the investment</li>
+                                    <li><strong>P</strong> = the principal investment amount</li>
+                                    <li><strong>r</strong> = annual interest rate (decimal)</li>
+                                    <li><strong>n</strong> = number of times interest is compounded per year</li>
+                                    <li><strong>t</strong> = number of years the money is invested</li>
+                                </ul>
+                            </div>
+                            
+                            <h3><i class="fas fa-calculator"></i> Compound Interest with Monthly Contributions</h3>
+                            <p>For compound interest calculations with regular monthly contributions, the formula is slightly different:</p>
+                            <p class="formula">A = P(1 + r/12)^(12t) + PMT × [((1 + r/12)^(12t) - 1) / (r/12)]</p>
+                            <p>where PMT is the monthly contribution amount.</p>
+                            
+                            <div class="highlight">
+                                <h3><i class="fas fa-calculator"></i> The Rule of 72</h3>
+                                <p>The Rule of 72 is a simple way to estimate how long an investment will take to double given a fixed annual rate of interest. The formula is:</p>
+                                <p class="formula">Years to Double ≈ 72 ÷ Annual Interest Rate(%)</p>
+                                <p>For example, if the annual interest rate is 8%, it will take approximately: 72 ÷ 8 = 9 years for the investment to double.</p>
+                                <p>Accuracy of the Rule of 72:</p>
+                                <ul>
+                                    <li>It's very accurate for interest rates between 6% and 10%</li>
+                                    <li>For other interest rates, you can use the more precise Rule of 69.3 or Rule of 70</li>
+                                    <li>The Rule of 72 also works for calculating how long it takes for inflation to halve purchasing power</li>
+                                </ul>
+                            </div>
+                            
+                            <h3><i class="fas fa-chart-line"></i> Factors Affecting Compound Interest</h3>
+                            <ul>
+                                <li><strong>Principal</strong> - The larger the initial investment, the higher the final return</li>
+                                <li><strong>Interest Rate</strong> - Higher interest rates make the compound effect more pronounced</li>
+                                <li><strong>Time</strong> - The longer the investment period, the more significant the compound effect</li>
+                                <li><strong>Compounding Frequency</strong> - More frequent compounding leads to higher returns</li>
+                                <li><strong>Regular Contributions</strong> - Regular additional investments accelerate wealth accumulation</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="encyclopedia-content hidden" id="encyclopedia-content-zh-formula">
+                            <div class="formula-box">
+                                <h3><i class="fas fa-square-root-alt"></i> 复利计算公式</h3>
+                                <p>复利的基本公式是：<span class="formula">A = P(1 + r/n)^(nt)</span>，其中：</p>
+                                <ul>
+                                    <li><strong>A</strong> = 投资的未来价值</li>
+                                    <li><strong>P</strong> = 本金投资金额</li>
+                                    <li><strong>r</strong> = 年利率（十进制）</li>
+                                    <li><strong>n</strong> = 每年复利次数</li>
+                                    <li><strong>t</strong> = 投资年数</li>
+                                </ul>
+                            </div>
+                            
+                            <h3><i class="fas fa-calculator"></i> 带每月追加投资的复利计算</h3>
+                            <p>对于带有定期每月追加投资的复利计算，公式略有不同：</p>
+                            <p class="formula">A = P(1 + r/12)^(12t) + PMT × [((1 + r/12)^(12t) - 1) / (r/12)]</p>
+                            <p>其中 PMT 是每月追加投资金额。</p>
+                            
+                            <div class="highlight">
+                                <h3><i class="fas fa-calculator"></i> 72法则</h3>
+                                <p>72法则是一种简单估算投资翻倍所需时间的方法。公式是：</p>
+                                <p class="formula">翻倍所需年数 ≈ 72 ÷ 年利率(%)</p>
+                                <p>例如，如果年利率为8%，投资翻倍大约需要：72 ÷ 8 = 9年。</p>
+                                <p>72法则的准确性：</p>
+                                <ul>
+                                    <li>对于6%到10%之间的利率非常准确</li>
+                                    <li>对于其他利率，可以使用更精确的69.3法则或70法则</li>
+                                    <li>72法则也可用于计算通货膨胀使购买力减半所需的时间</li>
+                                </ul>
+                            </div>
+                            
+                            <h3><i class="fas fa-chart-line"></i> 影响复利的因素</h3>
+                            <ul>
+                                <li><strong>本金</strong> - 初始投资越大，最终回报越高</li>
+                                <li><strong>利率</strong> - 利率越高，复利效应越明显</li>
+                                <li><strong>时间</strong> - 投资期越长，复利效应越显著</li>
+                                <li><strong>复利频率</strong> - 复利频率越高，回报越高</li>
+                                <li><strong>定期追加投资</strong> - 定期追加投资加速财富积累</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="content-examples">
+                        <div class="encyclopedia-content" id="encyclopedia-content-en-examples">
+                            <div class="highlight">
+                                <h3><i class="fas fa-chart-pie"></i> Practical Applications</h3>
+                                <p>Compound interest calculations are widely used in financial investments, loan calculations, retirement planning, and more. Understanding compound interest helps in creating long-term financial plans and achieving wealth growth goals.</p>
+                            </div>
+                            
+                            <h3><i class="fas fa-piggy-bank"></i> Savings & Investments</h3>
+                            <p>Compound interest is the core principle of long-term savings and investments. Whether it's bank deposits, bonds, stocks, or funds, the compound effect can help your wealth grow exponentially.</p>
+                            
+                            <h3><i class="fas fa-home"></i> Loans & Debts</h3>
+                            <p>Compound interest also applies to loans and debts. Credit card debt, mortgages, car loans, etc., all use compound interest to calculate interest, so it's important to pay off high-interest debt as soon as possible.</p>
+                            
+                            <h3><i class="fas fa-user-clock"></i> Retirement Planning</h3>
+                            <p>Compound interest is key to retirement planning. The earlier you start saving for retirement, the more pronounced the compound effect. Even investing a small amount each month can accumulate a substantial retirement fund over decades of compound growth.</p>
+                            
+                            <h3><i class="fas fa-graduation-cap"></i> Education Funds</h3>
+                            <p>When setting up an education fund for your children, using the compound effect can help you accumulate sufficient education funds more easily. Start with a small amount, invest regularly, and let time and compound interest work for you.</p>
+                        </div>
+                        
+                        <div class="encyclopedia-content hidden" id="encyclopedia-content-zh-examples">
+                            <div class="highlight">
+                                <h3><i class="fas fa-chart-pie"></i> 实际应用</h3>
+                                <p>复利计算广泛应用于金融投资、贷款计算、退休规划等领域。理解复利有助于制定长期财务计划并实现财富增长目标。</p>
+                            </div>
+                            
+                            <h3><i class="fas fa-piggy-bank"></i> 储蓄与投资</h3>
+                            <p>复利是长期储蓄和投资的核心原则。无论是银行存款、债券、股票还是基金，复利效应都可以帮助您的财富呈指数级增长。</p>
+                            
+                            <h3><i class="fas fa-home"></i> 贷款与债务</h3>
+                            <p>复利也适用于贷款和债务。信用卡债务、抵押贷款、汽车贷款等都使用复利计算利息，因此尽快偿还高息债务非常重要。</p>
+                            
+                            <h3><i class="fas fa-user-clock"></i> 退休规划</h3>
+                            <p>复利是退休规划的关键。您越早开始为退休储蓄，复利效应就越明显。即使每月只投资少量资金，经过几十年的复利增长，也能积累可观的退休基金。</p>
+                            
+                            <h3><i class="fas fa-graduation-cap"></i> 教育基金</h3>
+                            <p>在为孩子设立教育基金时，利用复利效应可以帮助您更轻松地积累足够的教育资金。从小额开始，定期投资，让时间和复利为您工作。</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </main>
+        
+        <footer>
+            <p id="footer-text">© 2023 Compound Interest Calculator | Designed for educational and reference purposes</p>
+        </footer>
+    </div>
+
+    <script>
+        // 默认设置为英文
+        let isEnglish = true;
+
+        // 语言切换
+        const langToggle = document.getElementById('langToggle');
+        const langText = document.getElementById('langText');
+        const appTitle = document.getElementById('app-title');
+        const appSubtitle = document.getElementById('app-subtitle');
+        const inputTitle = document.getElementById('input-title');
+        const resultsTitle = document.getElementById('results-title');
+        const footerText = document.getElementById('footer-text');
+        
+        const initialAmountLabel = document.getElementById('initial-amount-label');
+        const monthlyContributionLabel = document.getElementById('monthly-contribution-label');
+        const annualRateLabel = document.getElementById('annual-rate-label');
+        const yearsLabel = document.getElementById('years-label');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const calculateText = document.getElementById('calculate-text');
+        const resetText = document.getElementById('reset-text');
+        
+        const totalContributionsLabel = document.getElementById('total-contributions-label');
+        const totalInterestLabel = document.getElementById('total-interest-label');
+        const finalAmountLabel = document.getElementById('final-amount-label');
+        
+        // 标签页相关元素
+        const tabConcept = document.getElementById('tab-concept');
+        const tabFormula = document.getElementById('tab-formula');
+        const tabExamples = document.getElementById('tab-examples');
+        const tabConceptText = document.getElementById('tab-concept-text');
+        const tabFormulaText = document.getElementById('tab-formula-text');
+        const tabExamplesText = document.getElementById('tab-examples-text');
+        
+        const contentConcept = document.getElementById('content-concept');
+        const contentFormula = document.getElementById('content-formula');
+        const contentExamples = document.getElementById('content-examples');
+        
+        // 百科内容
+        const encyclopediaContentZhConcept = document.getElementById('encyclopedia-content-zh-concept');
+        const encyclopediaContentEnConcept = document.getElementById('encyclopedia-content-en-concept');
+        const encyclopediaContentZhFormula = document.getElementById('encyclopedia-content-zh-formula');
+        const encyclopediaContentEnFormula = document.getElementById('encyclopedia-content-en-formula');
+        const encyclopediaContentZhExamples = document.getElementById('encyclopedia-content-zh-examples');
+        const encyclopediaContentEnExamples = document.getElementById('encyclopedia-content-en-examples');
+        
+        langToggle.addEventListener('click', function() {
+            isEnglish = !isEnglish;
+            updateLanguage();
+        });
+        
+        // 标签页切换
+        tabConcept.addEventListener('click', function() {
+            setActiveTab('concept');
+        });
+        
+        tabFormula.addEventListener('click', function() {
+            setActiveTab('formula');
+        });
+        
+        tabExamples.addEventListener('click', function() {
+            setActiveTab('examples');
+        });
+        
+        function setActiveTab(tabName) {
+            // 移除所有标签和内容的active类
+            tabConcept.classList.remove('active');
+            tabFormula.classList.remove('active');
+            tabExamples.classList.remove('active');
+            contentConcept.classList.remove('active');
+            contentFormula.classList.remove('active');
+            contentExamples.classList.remove('active');
+            
+            // 添加active类到当前标签和内容
+            if (tabName === 'concept') {
+                tabConcept.classList.add('active');
+                contentConcept.classList.add('active');
+            } else if (tabName === 'formula') {
+                tabFormula.classList.add('active');
+                contentFormula.classList.add('active');
+            } else if (tabName === 'examples') {
+                tabExamples.classList.add('active');
+                contentExamples.classList.add('active');
+            }
+        }
+        
+        function updateLanguage() {
+            if (isEnglish) {
+                langText.textContent = '中文';
+                appTitle.textContent = 'Compound Interest Calculator';
+                appSubtitle.textContent = 'Discover the miraculous power of compound interest';
+                inputTitle.textContent = 'Input Parameters';
+                resultsTitle.textContent = 'Calculation Results';
+                footerText.textContent = '© 2023 Compound Interest Calculator | Designed for educational and reference purposes';
+                
+                initialAmountLabel.innerHTML = '<i class="fas fa-wallet"></i> Initial Amount';
+                monthlyContributionLabel.innerHTML = '<i class="fas fa-piggy-bank"></i> Monthly Contribution';
+                annualRateLabel.innerHTML = '<i class="fas fa-percentage"></i> Annual Rate (%) <span class="tooltip"><i class="fas fa-info-circle" style="color: var(--primary-light);"></i><span class="tooltiptext">Enter the expected annual return percentage</span></span>';
+                yearsLabel.innerHTML = '<i class="fas fa-calendar-alt"></i> Years';
+                calculateText.textContent = 'Calculate';
+                resetText.textContent = 'Reset';
+                
+                totalContributionsLabel.textContent = 'Total Contributions';
+                totalInterestLabel.textContent = 'Total Interest';
+                finalAmountLabel.textContent = 'Final Amount';
+                
+                // 更新标签页文本
+                tabConceptText.textContent = 'Concept';
+                tabFormulaText.textContent = 'Formula';
+                tabExamplesText.textContent = 'Applications';
+                
+                // 显示英文内容，隐藏中文内容
+                encyclopediaContentZhConcept.classList.add('hidden');
+                encyclopediaContentEnConcept.classList.remove('hidden');
+                encyclopediaContentZhFormula.classList.add('hidden');
+                encyclopediaContentEnFormula.classList.remove('hidden');
+                encyclopediaContentZhExamples.classList.add('hidden');
+                encyclopediaContentEnExamples.classList.remove('hidden');
+            } else {
+                langText.textContent = 'English';
+                appTitle.textContent = '复利计算器';
+                appSubtitle.textContent = '探索复利的奇迹力量';
+                inputTitle.textContent = '输入参数';
+                resultsTitle.textContent = '计算结果';
+                footerText.textContent = '© 2023 复利计算器 | 设计用于教育和参考目的';
+                
+                initialAmountLabel.innerHTML = '<i class="fas fa-wallet"></i> 初始本金';
+                monthlyContributionLabel.innerHTML = '<i class="fas fa-piggy-bank"></i> 每月追加金额';
+                annualRateLabel.innerHTML = '<i class="fas fa-percentage"></i> 年利率 (%) <span class="tooltip"><i class="fas fa-info-circle" style="color: var(--primary-light);"></i><span class="tooltiptext">输入预期的年化收益率百分比</span></span>';
+                yearsLabel.innerHTML = '<i class="fas fa-calendar-alt"></i> 投资年限';
+                calculateText.textContent = '计算';
+                resetText.textContent = '重置';
+                
+                totalContributionsLabel.textContent = '总投入';
+                totalInterestLabel.textContent = '总利息';
+                finalAmountLabel.textContent = '最终金额';
+                
+                // 更新标签页文本
+                tabConceptText.textContent = '复利概念';
+                tabFormulaText.textContent = '计算公式';
+                tabExamplesText.textContent = '实际应用';
+                
+                // 显示中文内容，隐藏英文内容
+                encyclopediaContentEnConcept.classList.add('hidden');
+                encyclopediaContentZhConcept.classList.remove('hidden');
+                encyclopediaContentEnFormula.classList.add('hidden');
+                encyclopediaContentZhFormula.classList.remove('hidden');
+                encyclopediaContentEnExamples.classList.add('hidden');
+                encyclopediaContentZhExamples.classList.remove('hidden');
+            }
+            
+            // 重新计算并更新结果
+            calculateCompoundInterest();
+        }
+        
+        // 复利计算
+        const calculateBtnElement = document.getElementById('calculateBtn');
+        const resetBtnElement = document.getElementById('resetBtn');
+        const initialAmountInput = document.getElementById('initialAmount');
+        const monthlyContributionInput = document.getElementById('monthlyContribution');
+        const annualRateInput = document.getElementById('annualRate');
+        const yearsInput = document.getElementById('years');
+        
+        const totalContributionsElement = document.getElementById('totalContributions');
+        const totalInterestElement = document.getElementById('totalInterest');
+        const finalAmountElement = document.getElementById('finalAmount');
+        
+        let chart;
+        
+        calculateBtnElement.addEventListener('click', calculateCompoundInterest);
+        resetBtnElement.addEventListener('click', resetForm);
+        
+        // 初始计算
+        window.addEventListener('load', function() {
+            calculateCompoundInterest();
+        });
+        
+        function calculateCompoundInterest() {
+            // 显示加载状态
+            calculateBtnElement.innerHTML = '<div class="loading"></div>' + (isEnglish ? 'Calculating...' : '计算中...');
+            calculateBtnElement.disabled = true;
+            
+            // 使用setTimeout模拟计算过程，让用户看到加载状态
+            setTimeout(() => {
+                const initialAmount = parseFloat(initialAmountInput.value);
+                const monthlyContribution = parseFloat(monthlyContributionInput.value);
+                const annualRate = parseFloat(annualRateInput.value) / 100;
+                const years = parseInt(yearsInput.value);
+                
+                // 每月复利
+                const monthlyRate = annualRate / 12;
+                const months = years * 12;
+                
+                let currentAmount = initialAmount;
+                let totalContributions = initialAmount;
+                const dataPoints = [initialAmount];
+                
+                for (let i = 1; i <= months; i++) {
+                    // 每月初追加投资
+                    currentAmount += monthlyContribution;
+                    totalContributions += monthlyContribution;
+                    
+                    // 计算月末利息
+                    currentAmount *= (1 + monthlyRate);
+                    
+                    // 记录每年末的数据
+                    if (i % 12 === 0) {
+                        dataPoints.push(currentAmount);
+                    }
+                }
+                
+                const totalInterest = currentAmount - totalContributions;
+                
+                // 更新UI
+                totalContributionsElement.textContent = formatCurrency(totalContributions);
+                totalInterestElement.textContent = formatCurrency(totalInterest);
+                finalAmountElement.textContent = formatCurrency(currentAmount);
+                
+                // 添加动画效果
+                animateValue(totalContributionsElement, 0, totalContributions, 1000);
+                animateValue(totalInterestElement, 0, totalInterest, 1000);
+                animateValue(finalAmountElement, 0, currentAmount, 1000);
+                
+                // 更新图表
+                updateChart(dataPoints, years);
+                
+                // 恢复按钮状态
+                calculateBtnElement.innerHTML = '<i class="fas fa-calculator"></i> <span id="calculate-text">' + (isEnglish ? 'Calculate' : '计算') + '</span>';
+                calculateBtnElement.disabled = false;
+            }, 800);
+        }
+        
+        // 数字动画
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                element.textContent = formatCurrency(value);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+        
+        function resetForm() {
+            initialAmountInput.value = 10000;
+            monthlyContributionInput.value = 1000;
+            annualRateInput.value = 8;
+            yearsInput.value = 20;
+            calculateCompoundInterest();
+        }
+        
+        function formatCurrency(amount) {
+            if (isEnglish) {
+                return '$' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            } else {
+                return '¥' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            }
+        }
+        
+        function updateChart(dataPoints, years) {
+            const ctx = document.getElementById('chart').getContext('2d');
+            
+            // 销毁现有图表
+            if (chart) {
+                chart.destroy();
+            }
+            
+            // 生成年份标签
+            const labels = [];
+            for (let i = 0; i <= years; i++) {
+                labels.push(isEnglish ? `Year ${i}` : `第${i}年`);
+            }
+            
+            // 创建渐变
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(67, 97, 238, 0.6)');
+            gradient.addColorStop(1, 'rgba(67, 97, 238, 0.1)');
+            
+            // 创建新图表
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: isEnglish ? 'Investment Value' : '投资价值',
+                        data: dataPoints,
+                        borderColor: '#4361EE',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#4361EE',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: 'Poppins'
+                                },
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(45, 55, 72, 0.9)',
+                            titleFont: {
+                                family: 'Poppins'
+                            },
+                            bodyFont: {
+                                family: 'Poppins'
+                            },
+                            callbacks: {
+                                label: function(context) {
+                                    return (isEnglish ? 'Value: ' : '价值: ') + formatCurrency(context.raw);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'Poppins'
+                                },
+                                callback: function(value) {
+                                    return formatCurrency(value);
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                font: {
+                                    family: 'Poppins'
+                                },
+                                maxTicksLimit: window.innerWidth < 768 ? 6 : 10
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 初始化页面为英文
+        updateLanguage();
+    </script>
+</body>
+</html>
